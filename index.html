@@ -1,0 +1,35 @@
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+    <title>BOOTSTRAP HOMIE!!!</title>
+    <link rel="stylesheet" href="http://twitter.github.com/bootstrap/assets/css/bootstrap-1.2.0.min.css">
+
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+    <script src="jquery.bootstrappopover.js" type="text/javascript" charset="utf-8"></script>
+
+    <script type="text/javascript" charset="utf-8">
+        $(function() {
+            $('a.bootstrap-popover').bootstrapPopover();
+        });
+    </script>
+</head>
+<body>
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <div class="container">
+        <div class="row">
+            <div class="span16 columns">
+                <a href="#hello-thar" class="bootstrap-popover" title="Why Hello!">Click me!</a>
+            </div>
+        </div>
+    </div>
+    <div style="display:none;">
+        <div id="hello-thar">Yes, HELLO THAR!<br /><br /><br />BOOM!</div>
+    </div>
+</body>
+</html>
