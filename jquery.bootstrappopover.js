@@ -88,8 +88,6 @@
     };
     
     $.BootstrapPopover.defaultOptions = {
-        content: "",
-        title: "",
         fade_out_speed: "fast",
         fade_in_speed: "fast",
         popover_html: " \
