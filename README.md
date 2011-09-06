@@ -27,3 +27,17 @@ holding the content for the popover. The title attr on the anchor tag should be
 the title of the popover.
   
 see index.html for more info.
+  
+
+Bugs
+----
+
+Fork it, and fix 'em. I did this as sort of a quick and dirty script. It's
+helping me right now. I hope it can help you as well. If you see something that
+needs to be fixed, file an issue above. You can also let me know on [twitter](http://twitter.com/philipthrasher "FOLLOW ME NOW").
+
+Who
+---
+
+Why, @pthrasher of course! You can [follow](http://twitter.com/philipthrasher "FOLLOW ME NOW") me on twitter, or shoot me a message
+here on github.
