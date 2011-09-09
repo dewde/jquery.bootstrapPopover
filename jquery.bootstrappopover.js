@@ -11,8 +11,13 @@
             base.options = $.extend({},$.BootstrapPopover.defaultOptions, options);
             base.$popover = null;
             base.$el.click(function(event) {
-                base.toggle_popover();
                 event.preventDefault();
+            });
+            base.$el.mouseover(function(event){
+                base.toggle_popover();
+            });
+            base.$el.mouseout(function(event){
+                base.toggle_popover();
             });
         };
         base.toggle_popover = function(){
