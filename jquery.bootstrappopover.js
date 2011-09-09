@@ -1,4 +1,10 @@
 (function($){
+    $.BootstrapIdCounter = 0;
+    $.BootstrapNextId = function(){
+        $.BootstrapIdCounter++;
+        return $.BootstrapIdCounter;
+    };
+
     $.BootstrapPopover = function(el, options){
         var base = this;
         
@@ -6,31 +12,79 @@
         base.el = el;
         
         base.$el.data("BootstrapPopover", base);
-        window.$in = null;
         
         base.init = function(){
             base.options = $.extend({},$.BootstrapPopover.defaultOptions, options);
             base.$popover = null;
-            base.$el.click(function(event) {
-                event.preventDefault();
-                base.toggle_popover();
+            base.sig = base.$el.attr('href') + "_" + $.BootstrapNextId();
+
+            if (base.options.tooltip_mode){
+                base.$el.hover(function(event){
+                    base.toggle_popover();
+                },function(event){
+                    base._close_popover(base.$el.getBootstrapPopover());
+                });
+            } else {
+                base.$el.click(function(event) {
+                    $(document).trigger('newPopoverOpen');
+                    base.toggle_popover();
+                    event.preventDefault();
+                });
+            }
+        };
+
+        base._open_popover = function($popover, cb) {
+            base.options.before_open(base.$el, $popover);
+            $popover.fadeIn(base.options.fade_in_speed, function(){
+                if (cb != undefined) cb($popover);
+                base.options.after_open(base.$el, $popover);
             });
         };
-        base.toggle_popover = function(){
-            
-            if((window.$in) != null) && (window.$in != base.$popover)){
-                window.$in.remove();
-                window.$in.$popover = null;
-                window.$in = null;
+
+        base._close_popover = function($popover, cb) {
+            base.options.before_close(base.$el, $popover);
+            base.$popover.fadeOut(base.options.fade_out_speed, function() {
+                base.$popover.remove();
                 base.$popover = null;
-            }
+                
+                $(window).unbind("resize."+base.sig);
+                $(document).unbind("newPopoverOpen."+base.sig);
+                if (cb != undefined) cb($popover);
+                base.options.after_close(base.$el);
+            });
+        };
+
+        base._resize = function(event){
+            var $popover = event.data.$popover,
+                $a = event.data.$a,
+                a_offset = $a.offset(),
+                a_o_width = $a.outerWidth(),
+                d_width = $(document).width(),
+                p_width = $popover.width(),
+                p_height = $popover.height();
             
+            if (a_offset.left < p_width) {
+                $popover.removeClass('left');
+                $popover.addClass('right');
+            }
+
+            if ($popover.hasClass('left')) {
+                left = a_offset.left - 12 - p_width;
+            } else {
+                left = a_offset.left + a_o_width + 2;
+            }
+
+            $popover.css({left:left, top:top});
+        };
+
+        base.toggle_popover = function(){
+            if (base == undefined) {
+                console.log("no base!");
+                base = arguments[0].data.base;
+            }
+
             if (base.$popover != null) {
-                base.$popover.fadeOut(base.options.fade_out_speed, function() {
-                    base.$popover.remove();
-                    base.$popover = null;
-                });
-                $(document).unbind("resize."+base.$el.attr('href'));
+                base._close_popover(base.$popover);
                 return;
             }
             var $popover = $(base.options.popover_html),
@@ -61,36 +115,12 @@
             }
 
             $popover.css({left:left, top:top});
-            $popover.fadeIn(base.options.fade_in_speed);
             
+            base._open_popover($popover);
             base.$popover = $popover;
-            window.$in = base.$popover;
 
-            $(window).bind("resize."+$a.attr('href'), {$popover:$popover, $a:$a}, function(event){
-                var $popover = event.data.$popover,
-                    $a = event.data.$a,
-                    a_offset = $a.offset(),
-                    a_o_width = $a.outerWidth(),
-                    d_width = $(document).width(),
-                    p_width = $popover.width(),
-                    p_height = $popover.height();
-                
-                if (a_offset.left < p_width) {
-                    $popover.removeClass('left');
-                    $popover.addClass('right');
-                }
-
-                if ($popover.hasClass('left')) {
-                    left = a_offset.left - 12 - p_width;
-                } else {
-                    left = a_offset.left + a_o_width + 2;
-                }
-
-                $popover.css({left:left, top:top});
-
-                
-            });
-
+            $(window).bind("resize."+base.sig, {$popover:$popover, $a:$a}, base._resize);
+            $(document).bind("newPopoverOpen."+base.sig, {base:base}, base.toggle_popover);
 
         };
         
@@ -100,6 +130,14 @@
     $.BootstrapPopover.defaultOptions = {
         fade_out_speed: "fast",
         fade_in_speed: "fast",
+
+        before_open: function() { return; },
+        after_open: function() { return; },
+        before_close: function() { return; },
+        after_close: function() { return; },
+
+        tooltip_mode: false,
+
         popover_html: " \
         <div class=\"popover left\" style=\"position:absolute;top:-10000;left:-10000;\"> \
           <div class=\"arrow\"></div> \
@@ -124,3 +162,4 @@
     };
     
 })(jQuery);
+
