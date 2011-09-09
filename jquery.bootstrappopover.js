@@ -79,7 +79,6 @@
 
         base.toggle_popover = function(){
             if (base == undefined) {
-                console.log("no base!");
                 base = arguments[0].data.base;
             }
 
