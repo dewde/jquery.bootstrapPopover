@@ -6,21 +6,25 @@
         base.el = el;
         
         base.$el.data("BootstrapPopover", base);
+        window.$in = null;
         
         base.init = function(){
             base.options = $.extend({},$.BootstrapPopover.defaultOptions, options);
             base.$popover = null;
             base.$el.click(function(event) {
                 event.preventDefault();
-            });
-            base.$el.mouseover(function(event){
-                base.toggle_popover();
-            });
-            base.$el.mouseout(function(event){
                 base.toggle_popover();
             });
         };
         base.toggle_popover = function(){
+            
+            if((window.$in) != null) && (window.$in != base.$popover)){
+                window.$in.remove();
+                window.$in.$popover = null;
+                window.$in = null;
+                base.$popover = null;
+            }
+            
             if (base.$popover != null) {
                 base.$popover.fadeOut(base.options.fade_out_speed, function() {
                     base.$popover.remove();
@@ -60,6 +64,7 @@
             $popover.fadeIn(base.options.fade_in_speed);
             
             base.$popover = $popover;
+            window.$in = base.$popover;
 
             $(window).bind("resize."+$a.attr('href'), {$popover:$popover, $a:$a}, function(event){
                 var $popover = event.data.$popover,
