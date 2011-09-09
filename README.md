@@ -28,6 +28,12 @@ In your `<head>`:
         });
     </script>
 
+The basic gist of it is, create an anchor tag, the href element should be a css selector to a div
+holding the content for the popover. The title attr on the anchor tag should be
+the title of the popover.
+  
+see index.html for more info.
+  
 
 But I Need Options!
 -------------------
@@ -65,17 +71,8 @@ Why
 ---
 
 Because we all know that it takes 7 elephants to row a canoe across the desert
-on peanut butter and jelly sandwiches when Justin Beiber is a pear tree.
-  
-
-How
----
-
-Create an anchor tag, the href element should be a css selector to a div
-holding the content for the popover. The title attr on the anchor tag should be
-the title of the popover.
-  
-see index.html for more info.
+on peanut butter and jelly sandwiches when Justin Beiber is a pear tree plus
+salmon.
   
 
 Bugs
