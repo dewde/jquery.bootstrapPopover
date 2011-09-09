@@ -36,6 +36,7 @@ You want em', you got em'. Just pass them into the initial call as a JSON
 object.
 
 Options:
+
     {
     fade_out_speed: "fast",
     fade_in_speed: "fast",
